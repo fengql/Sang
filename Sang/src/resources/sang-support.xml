@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+    <package name="base" namespace="/" extends="sang-default">
+		
+        <action name="BaseAction" class="BaseAction">
+            <result>/views/jsp/Login.jsp</result>
+        </action>
+		
+		<action name="LoginAction" class="BaseAction">
+			<result name="success">/views/jsp/Menu.jsp</result>
+			<result name="input">/views/jsp/Login.jsp</result>
+			<result name="login">/views/jsp/Login.jsp</result>
+		</action>
+        
+        
+        <action name="WelcomeAction" class="WelcomeAction">
+        	<result name="success">/views/jsp/Menu.jsp</result>
+        	<result name="input">/views/jsp/Login.jsp</result>
+			<result name="login">/views/jsp/Login.jsp</result>
+        </action>
+        
+		<action name="SuggestionAction" class="SuggestionAction">
+        	<result name="success">/views/jsp/Suggestion.jsp</result>
+        	<result name="input">/views/jsp/Login.jsp</result>
+			<result name="login">/views/jsp/Login.jsp</result>
+        </action>
+        
+        <action name="HistoryAction" class="HistoryAction">
+        	<result name="success">/views/jsp/History.jsp</result>
+        	<result name="input">/views/jsp/Login.jsp</result>
+			<result name="login">/views/jsp/Login.jsp</result>
+        </action>
+        
+        <action name="NewsAction" class="NewsAction">
+        	<result name="success">/views/jsp/News.jsp</result>
+        	<result name="input">/views/jsp/Login.jsp</result>
+			<result name="login">/views/jsp/Login.jsp</result>
+        </action>
+        
+        <action name="TipAction" class="TipAction">
+        	<result name="success">/views/jsp/Tip.jsp</result>
+        	<result name="input">/views/jsp/Login.jsp</result>
+			<result name="login">/views/jsp/Login.jsp</result>
+        </action>
+        
+        <action name="AnnouncementAction" class="AnnouncementAction">
+        	<result name="success">/views/jsp/Announcement.jsp</result>
+        	<result name="input">/views/jsp/Login.jsp</result>
+			<result name="login">/views/jsp/Login.jsp</result>
+        </action>
+        
+        <action name="*" class="BaseAction">
+            <result>/views/jsp/{1}.jsp</result>
+        </action>
+
+        <!-- Add actions here -->
+    </package>
+</struts>

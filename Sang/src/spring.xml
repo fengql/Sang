@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+						http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	
+	<!--加载一些配置文件-->
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+	        <list>
+	            <value>classpath:config/sang.properties</value>
+	        </list>
+	    </property>
+	</bean>
+	
+	<!--主数据源用于写操作-->
+	<bean id="DataWriteSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">  
+	    <property name="driverClassName" value="${db_write_driverClassName}" />
+	    <property name="url" value="${db_write_connectUrl}" />
+	    <property name="username" value="${db_write_username}" />
+	    <property name="password" value="${db_write_password}" />
+	    <property name="maxActive" value="${db_write_maxActive}" />
+	    <property name="maxWait" value="${db_write_maxWait}" />
+	</bean>
+	
+	<!-- 从数据源用于读操作 -->
+	<bean id="DataReadSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">  
+	    <property name="driverClassName" value="${db_read_driverClassName}" />
+	    <property name="url" value="${db_read_connectUrl}" />
+	    <property name="username" value="${db_read_username}" />
+	    <property name="password" value="${db_read_password}" />
+	    <property name="maxActive" value="${db_read_maxActive}" />
+	    <property name="maxWait" value="${db_read_maxWait}" />
+	    <property name="defaultReadOnly" value="true" />
+	</bean>
+	
+	<!-- 主数据源工厂 -->
+	<bean id="WriteSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="DataWriteSource" />
+		<property name="mapperLocations" value="classpath:com/sang/dao/*.xml" />
+		<property name="transactionFactory">
+		  <bean  class="org.apache.ibatis.transaction.managed.ManagedTransactionFactory" />
+		</property>
+	</bean>
+	
+	<!-- 从数据源工厂 -->
+	<bean id="ReadSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="DataReadSource" />
+		<property name="mapperLocations" value="classpath:com/sang/dao/*.xml" />
+		<property name="transactionFactory">
+		  <bean  class="org.apache.ibatis.transaction.managed.ManagedTransactionFactory" />
+		</property>
+	</bean>
+	
+	<!-- 主数据SqlSession -->
+	<bean id="WriteSqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="WriteSqlSessionFactory" />
+	</bean>
+	
+	<!-- 从数据SqlSession -->
+	<bean id="ReadSqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="ReadSqlSessionFactory" />
+	</bean>
+	
+	
+	<import resource="resources/application-dao.xml" />
+	<import resource="resources/application-service.xml" />
+	<import resource="resources/application-action.xml" />
+</beans>
